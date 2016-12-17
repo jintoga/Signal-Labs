@@ -25,4 +25,5 @@ dependencies {
     compile "com.android.support:appcompat-v7:$SUPPORT_LIBRARY_VERSION"
     compile "com.android.support:design:$SUPPORT_LIBRARY_VERSION"
     compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.afollestad.material-dialogs:core:0.9.1.0'
 }

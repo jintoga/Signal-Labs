@@ -3,4 +3,9 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <array name="lab1_toolbar_item">
+        <item>SAW</item>
+        <item>ANGLE</item>
+        <item>LEVELS</item>
+    </array>
 </resources>

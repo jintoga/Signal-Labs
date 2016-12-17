@@ -7,7 +7,7 @@ import java.util.List;
  */
 
 public class Helper {
-    public static String signalSaver(List<Double> signals, String fileName) {
+    public static String signalSaver(List<Double> signals) {
         String result = "";
         for (double signal : signals) {
             result += String.valueOf(signal) + "\n";
