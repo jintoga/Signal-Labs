@@ -50,6 +50,7 @@
         android:layout_marginTop="16dp" />
 
     <android.support.v7.widget.AppCompatButton
+        android:id="@+id/drawGraph"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="130dp"
         android:layout_height="wrap_content"

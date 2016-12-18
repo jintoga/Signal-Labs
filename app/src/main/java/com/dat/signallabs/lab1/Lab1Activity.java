@@ -13,9 +13,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.dat.signallabs.R;
 import com.jjoe64.graphview.GraphView;
+import java.util.List;
+import org.apache.commons.math3.complex.Complex;
 
 public class Lab1Activity extends AppCompatActivity {
 
@@ -33,7 +36,6 @@ public class Lab1Activity extends AppCompatActivity {
     protected Spinner spinner3;
     private MaterialDialog dialog;
 
-
     @Bind(R.id.function)
     protected TextView function;
     @Bind(R.id.graph1)
@@ -42,6 +44,10 @@ public class Lab1Activity extends AppCompatActivity {
     protected GraphView graph2;
     @Bind(R.id.graph3)
     protected GraphView graph3;
+
+    private List<Complex> signals;
+    private List<Complex> DPF;
+    private List<Complex> fSignal;
 
     public static void startActivity(Context context) {
         if (context instanceof Lab1Activity) {
@@ -124,5 +130,45 @@ public class Lab1Activity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @OnClick(R.id.drawGraph)
+    protected void onDrawGraphClicked() {
+        graph1.removeAllSeries();
+        graph2.removeAllSeries();
+        graph3.removeAllSeries();
+        
+        String diogramma = (String) spinner1.getSelectedItem();
+        spinner2.setSelection(0);
+
+        function.setText((String) spinner3.getSelectedItem());
+        signals = Helper.doubleToComplex(
+            Helper.stringToDoubles(getPreferences(MODE_PRIVATE).getString(diogramma, "")));
+        DPF = FourierTransform.DPF(signals);
+
+        switch (spinner3.getSelectedItemPosition()) {
+            case 0:
+                fSignal = FourierTransform.ODPF(
+                    FourierTransform.filter(DPF, spinner1.getSelectedItemPosition()));
+                break;
+
+            case 1:
+                fSignal = FourierTransform.BPF(signals, true);
+                break;
+
+            case 2:
+                fSignal = FourierTransform.BPFn(signals);
+                break;
+
+            default:
+                break;
+        }
+
+        Helper.drawSignal(graph1,
+            Helper.getSeries(Helper.complexToDouble(signals, 'r'), FourierTransform.FREQUENCY));
+        Helper.drawSignal(graph2, Helper.getSeries(Helper.complexToDouble(DPF, 'a'),
+            DPF.size() / FourierTransform.FREQUENCY));
+        Helper.drawSignal(graph3, Helper.getSeries(Helper.complexToDouble(fSignal, 'a'),
+            fSignal.size() / FourierTransform.FREQUENCY));
     }
 }
