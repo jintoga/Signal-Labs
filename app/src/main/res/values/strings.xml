@@ -12,6 +12,10 @@
     <string name="dpf">ДПФ</string>
     <string name="frequency">Частота</string>
     <string name="draw">Draw Graph</string>
+    <string name="lab_1">Lab 1</string>
+    <string name="lab_2">Lab 2</string>
+    <string name="lab_3">Lab 3</string>
+    <string name="lab_4">Lab 4</string>
     <array name="diogramma_types">
         <item>SAW</item>
         <item>ANGLE</item>
