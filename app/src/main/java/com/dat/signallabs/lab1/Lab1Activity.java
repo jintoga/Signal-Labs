@@ -4,13 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import butterknife.Bind;
@@ -26,6 +23,12 @@ public class Lab1Activity extends AppCompatActivity {
 
     @Bind(R.id.toolbar)
     protected Toolbar toolbar;
+    @Bind(R.id.spinner1)
+    protected Spinner spinner1;
+    @Bind(R.id.spinner2)
+    protected Spinner spinner2;
+    @Bind(R.id.spinner3)
+    protected Spinner spinner3;
     private MaterialDialog dialog;
 
     public static void startActivity(Context context) {
@@ -43,6 +46,27 @@ public class Lab1Activity extends AppCompatActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         generate();
+        initSpinners();
+    }
+
+    private void initSpinners() {
+        ArrayAdapter<CharSequence> adapter1 =
+            ArrayAdapter.createFromResource(this, R.array.diogramma_types,
+                android.R.layout.simple_spinner_item);
+        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner1.setAdapter(adapter1);
+
+        ArrayAdapter<CharSequence> adapter2 =
+            ArrayAdapter.createFromResource(this, R.array.param_types,
+                android.R.layout.simple_spinner_item);
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner2.setAdapter(adapter2);
+
+        ArrayAdapter<CharSequence> adapter3 =
+            ArrayAdapter.createFromResource(this, R.array.function_types,
+                android.R.layout.simple_spinner_item);
+        adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner3.setAdapter(adapter3);
     }
 
     private void generate() {
@@ -64,45 +88,29 @@ public class Lab1Activity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_lab_1, menu);
-
-        MenuItem item = menu.findItem(R.id.spinner);
-        Spinner spinner = (Spinner) MenuItemCompat.getActionView(item);
-
-        ArrayAdapter<CharSequence> adapter =
-            ArrayAdapter.createFromResource(this, R.array.lab1_toolbar_item,
-                R.layout.custom_spinner_item);
-        adapter.setDropDownViewResource(R.layout.custom_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                switch (position) {
-                    case 0:
-                        dialog.setTitle("SAW");
-                        dialog.setContent(getPreferences(MODE_PRIVATE).getString(KEY_SAW, ""));
-                        dialog.show();
-                        break;
-                    case 1:
-                        dialog.setTitle("ANGLE");
-                        dialog.setContent(getPreferences(MODE_PRIVATE).getString(KEY_ANGLE, ""));
-                        dialog.show();
-                        break;
-                    case 2:
-                        dialog.setTitle("LEVELS");
-                        dialog.setContent(getPreferences(MODE_PRIVATE).getString(KEY_LEVELS, ""));
-                        dialog.show();
-                        break;
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.saw:
+                dialog.setTitle("SAW");
+                dialog.setContent(getPreferences(MODE_PRIVATE).getString(KEY_SAW, ""));
+                dialog.show();
+                break;
+            case R.id.angle:
+                dialog.setTitle("ANGLE");
+                dialog.setContent(getPreferences(MODE_PRIVATE).getString(KEY_ANGLE, ""));
+                dialog.show();
+                break;
+            case R.id.levels:
+                dialog.setTitle("LEVELS");
+                dialog.setContent(getPreferences(MODE_PRIVATE).getString(KEY_LEVELS, ""));
+                dialog.show();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

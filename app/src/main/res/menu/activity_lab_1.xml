@@ -2,8 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/spinner"
-        android:title="ActionBar Spinner"
-        app:actionViewClass="android.widget.Spinner"
+        android:id="@+id/saw"
+        android:title="@string/saw"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/angle"
+        android:title="@string/angle"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/levels"
+        android:title="@string/levels"
         app:showAsAction="always" />
 </menu>

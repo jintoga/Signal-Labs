@@ -3,9 +3,26 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <array name="lab1_toolbar_item">
+    <string name="levels">Levels</string>
+    <string name="angle">ANGLE</string>
+    <string name="saw">SAW</string>
+    <string name="original">Оригинал</string>
+    <string name="time">Время</string>
+    <string name="amplitude">Амплитуда</string>
+    <string name="dpf">ДПФ</string>
+    <array name="diogramma_types">
         <item>SAW</item>
         <item>ANGLE</item>
         <item>LEVELS</item>
+    </array>
+    <array name="param_types">
+        <item>Абсолютное значение</item>
+        <item>Действительная часть</item>
+        <item>Мнимая часть</item>
+    </array>
+    <array name="function_types">
+        <item>ОДПФ (фильтрованное)</item>
+        <item>БПФ</item>
+        <item>БПФn</item>
     </array>
 </resources>
