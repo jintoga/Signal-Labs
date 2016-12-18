@@ -38,9 +38,9 @@ public class Lab1Activity extends AppCompatActivity {
     protected TextView function;
     @Bind(R.id.graph1)
     protected GraphView graph1;
-    @Bind(R.id.spinner2)
+    @Bind(R.id.graph2)
     protected GraphView graph2;
-    @Bind(R.id.spinner3)
+    @Bind(R.id.graph3)
     protected GraphView graph3;
 
     public static void startActivity(Context context) {

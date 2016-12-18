@@ -11,6 +11,7 @@
     <string name="amplitude">Амплитуда</string>
     <string name="dpf">ДПФ</string>
     <string name="frequency">Частота</string>
+    <string name="draw">Draw Graph</string>
     <array name="diogramma_types">
         <item>SAW</item>
         <item>ANGLE</item>
