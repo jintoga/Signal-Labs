@@ -1,4 +1,4 @@
-package com.dat.signallabs.lab1;
+package com.dat.signallabs.views;
 
 import android.content.Context;
 import android.graphics.Canvas;

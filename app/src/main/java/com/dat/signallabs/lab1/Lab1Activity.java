@@ -10,10 +10,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.dat.signallabs.R;
+import com.jjoe64.graphview.GraphView;
 
 public class Lab1Activity extends AppCompatActivity {
 
@@ -30,6 +32,16 @@ public class Lab1Activity extends AppCompatActivity {
     @Bind(R.id.spinner3)
     protected Spinner spinner3;
     private MaterialDialog dialog;
+
+
+    @Bind(R.id.function)
+    protected TextView function;
+    @Bind(R.id.graph1)
+    protected GraphView graph1;
+    @Bind(R.id.spinner2)
+    protected GraphView graph2;
+    @Bind(R.id.spinner3)
+    protected GraphView graph3;
 
     public static void startActivity(Context context) {
         if (context instanceof Lab1Activity) {
