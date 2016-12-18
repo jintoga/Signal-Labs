@@ -1,8 +1,12 @@
 package com.dat.signallabs.lab1;
 
-import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.series.DataPoint;
-import com.jjoe64.graphview.series.LineGraphSeries;
+import android.graphics.Color;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.math3.complex.Complex;
@@ -20,19 +24,31 @@ public class Helper {
         return result;
     }
 
-    public static LineGraphSeries<DataPoint> getSeries(List<Double> signals, double multiplier) {
+    public static List<Entry> getSeries(List<Float> signals, float multiplier) {
         int i = 0;
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<>();
-        for (Double signal : signals) {
-            DataPoint dataPoint = new DataPoint(((double) i) / multiplier, signal);
-            series.appendData(dataPoint, false, signals.size());
+        List<Entry> series = new ArrayList<>();
+        for (Float signal : signals) {
+            Entry entry = new Entry(((float) i) / multiplier, signal);
+            series.add(entry);
             i++;
         }
         return series;
     }
 
-    public static void drawSignal(GraphView graphView, LineGraphSeries<DataPoint> series) {
-        graphView.addSeries(series);
+    public static void drawSignal(LineChart graphView, List<Entry> series) {
+
+        LineDataSet lineDataSet = new LineDataSet(series, "");
+
+        lineDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
+        lineDataSet.setColor(ColorTemplate.getHoloBlue());
+        lineDataSet.setCircleColor(Color.WHITE);
+        lineDataSet.setLineWidth(2.5f);
+        lineDataSet.setFillColor(ColorTemplate.getHoloBlue());
+        lineDataSet.setDrawCircles(false);
+
+        LineData lineData = new LineData();
+        lineData.addDataSet(lineDataSet);
+        graphView.setData(lineData);
     }
 
     public static List<Double> stringToDoubles(String data) {
@@ -52,18 +68,18 @@ public class Helper {
         return newList;
     }
 
-    public static ArrayList<Double> complexToDouble(List<Complex> list, char param) {
-        ArrayList<Double> newList = new ArrayList<>();
+    public static ArrayList<Float> complexToDouble(List<Complex> list, char param) {
+        ArrayList<Float> newList = new ArrayList<>();
         for (Complex number : list) {
             switch (param) {
                 case 'a':
-                    newList.add(number.abs());
+                    newList.add((float) number.abs());
                     break;
                 case 'r':
-                    newList.add(number.getReal());
+                    newList.add((float) number.getReal());
                     break;
                 case 'i':
-                    newList.add(number.getImaginary());
+                    newList.add((float) number.getImaginary());
                     break;
 
                 default:

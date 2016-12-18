@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -16,7 +18,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.dat.signallabs.R;
-import com.jjoe64.graphview.GraphView;
+import com.github.mikephil.charting.charts.LineChart;
 import java.util.List;
 import org.apache.commons.math3.complex.Complex;
 
@@ -39,11 +41,11 @@ public class Lab1Activity extends AppCompatActivity {
     @Bind(R.id.function)
     protected TextView function;
     @Bind(R.id.graph1)
-    protected GraphView graph1;
+    protected LineChart graph1;
     @Bind(R.id.graph2)
-    protected GraphView graph2;
+    protected LineChart graph2;
     @Bind(R.id.graph3)
-    protected GraphView graph3;
+    protected LineChart graph3;
 
     private List<Complex> signals;
     private List<Complex> DPF;
@@ -64,10 +66,10 @@ public class Lab1Activity extends AppCompatActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         generate();
-        initSpinners();
+        init();
     }
 
-    private void initSpinners() {
+    private void init() {
         ArrayAdapter<CharSequence> adapter1 =
             ArrayAdapter.createFromResource(this, R.array.diogramma_types,
                 android.R.layout.simple_spinner_item);
@@ -79,12 +81,30 @@ public class Lab1Activity extends AppCompatActivity {
                 android.R.layout.simple_spinner_item);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner2.setAdapter(adapter2);
+        spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (signals != null) {
+                    updateGraphics(position);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         ArrayAdapter<CharSequence> adapter3 =
             ArrayAdapter.createFromResource(this, R.array.function_types,
                 android.R.layout.simple_spinner_item);
         adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner3.setAdapter(adapter3);
+
+
+        graph1.setDescription(null);
+        graph2.setDescription(null);
+        graph3.setDescription(null);
     }
 
     private void generate() {
@@ -134,10 +154,10 @@ public class Lab1Activity extends AppCompatActivity {
 
     @OnClick(R.id.drawGraph)
     protected void onDrawGraphClicked() {
-        graph1.removeAllSeries();
-        graph2.removeAllSeries();
-        graph3.removeAllSeries();
-        
+        graph1.clear();
+        graph2.clear();
+        graph3.clear();
+
         String diogramma = (String) spinner1.getSelectedItem();
         spinner2.setSelection(0);
 
@@ -170,5 +190,32 @@ public class Lab1Activity extends AppCompatActivity {
             DPF.size() / FourierTransform.FREQUENCY));
         Helper.drawSignal(graph3, Helper.getSeries(Helper.complexToDouble(fSignal, 'a'),
             fSignal.size() / FourierTransform.FREQUENCY));
+    }
+
+    private void updateGraphics(int position) {
+        graph2.clear();
+        graph3.clear();
+        switch (position) {
+            case 0:
+                Helper.drawSignal(graph2,
+                    Helper.getSeries(Helper.complexToDouble(DPF, 'a'), FourierTransform.FREQUENCY));
+                Helper.drawSignal(graph3, Helper.getSeries(Helper.complexToDouble(fSignal, 'a'),
+                    FourierTransform.FREQUENCY));
+                break;
+
+            case 1:
+                Helper.drawSignal(graph2,
+                    Helper.getSeries(Helper.complexToDouble(DPF, 'r'), FourierTransform.FREQUENCY));
+                Helper.drawSignal(graph3, Helper.getSeries(Helper.complexToDouble(fSignal, 'r'),
+                    FourierTransform.FREQUENCY));
+                break;
+
+            case 2:
+                Helper.drawSignal(graph2,
+                    Helper.getSeries(Helper.complexToDouble(DPF, 'i'), FourierTransform.FREQUENCY));
+                Helper.drawSignal(graph3, Helper.getSeries(Helper.complexToDouble(fSignal, 'i'),
+                    FourierTransform.FREQUENCY));
+                break;
+        }
     }
 }

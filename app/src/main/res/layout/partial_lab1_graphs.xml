@@ -28,7 +28,7 @@
             android:layout_height="match_parent">
 
 
-            <com.jjoe64.graphview.GraphView
+            <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/graph1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -76,7 +76,7 @@
             android:layout_height="match_parent">
 
 
-            <com.jjoe64.graphview.GraphView
+            <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/graph2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -124,7 +124,7 @@
             android:layout_height="match_parent">
 
 
-            <com.jjoe64.graphview.GraphView
+            <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/graph3"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

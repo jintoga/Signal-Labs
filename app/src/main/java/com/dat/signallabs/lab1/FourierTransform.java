@@ -14,7 +14,7 @@ public class FourierTransform {
     public static final int ANGLE = 4;
     public static final int LEVELS = 5;
 
-    public static final double FREQUENCY = 360.0;
+    public static final float FREQUENCY = 360.0f;
 
     private static Complex j = new Complex(0, 1);
 
