@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.dat.signallabs.lab1.Lab1Activity;
+import com.dat.signallabs.lab2.Lab2Activity;
 
 public class MainActivity extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener {
@@ -53,6 +54,9 @@ public class MainActivity extends AppCompatActivity
         switch (item.getItemId()) {
             case R.id.lab1:
                 Lab1Activity.startActivity(this);
+                break;
+            case R.id.lab2:
+                Lab2Activity.startActivity(this);
                 break;
         }
         drawer.closeDrawer(GravityCompat.START);

@@ -15,7 +15,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".lab1.Lab1Activity"></activity>
+        <activity android:name=".lab1.Lab1Activity" />
+        <activity android:name=".lab2.Lab2Activity"></activity>
     </application>
 
 </manifest>
