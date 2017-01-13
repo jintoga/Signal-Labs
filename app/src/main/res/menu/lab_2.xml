@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/saw"
+        android:title="@string/a"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/angle"
+        android:title="@string/b"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/levels"
+        android:title="@string/c"
+        app:showAsAction="always" />
+</menu>

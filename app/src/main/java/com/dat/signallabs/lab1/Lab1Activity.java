@@ -17,6 +17,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.dat.signallabs.MainActivity;
 import com.dat.signallabs.R;
 import com.github.mikephil.charting.charts.LineChart;
 import java.util.List;
@@ -24,9 +25,6 @@ import org.apache.commons.math3.complex.Complex;
 
 public class Lab1Activity extends AppCompatActivity {
 
-    public static final String KEY_SAW = "SAW";
-    public static final String KEY_ANGLE = "ANGLE";
-    public static final String KEY_LEVELS = "LEVELS";
 
     @Bind(R.id.toolbar)
     protected Toolbar toolbar;
@@ -117,15 +115,15 @@ public class Lab1Activity extends AppCompatActivity {
 
         SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(KEY_SAW, saw);
-        editor.putString(KEY_ANGLE, angle);
-        editor.putString(KEY_LEVELS, levels);
+        editor.putString(MainActivity.KEY_SAW, saw);
+        editor.putString(MainActivity.KEY_ANGLE, angle);
+        editor.putString(MainActivity.KEY_LEVELS, levels);
         editor.apply();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_lab_1, menu);
+        getMenuInflater().inflate(R.menu.lab_1, menu);
         return true;
     }
 
@@ -135,17 +133,17 @@ public class Lab1Activity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.saw:
                 dialog.setTitle("SAW");
-                dialog.setContent(getPreferences(MODE_PRIVATE).getString(KEY_SAW, ""));
+                dialog.setContent(getPreferences(MODE_PRIVATE).getString(MainActivity.KEY_SAW, ""));
                 dialog.show();
                 break;
             case R.id.angle:
                 dialog.setTitle("ANGLE");
-                dialog.setContent(getPreferences(MODE_PRIVATE).getString(KEY_ANGLE, ""));
+                dialog.setContent(getPreferences(MODE_PRIVATE).getString(MainActivity.KEY_ANGLE, ""));
                 dialog.show();
                 break;
             case R.id.levels:
                 dialog.setTitle("LEVELS");
-                dialog.setContent(getPreferences(MODE_PRIVATE).getString(KEY_LEVELS, ""));
+                dialog.setContent(getPreferences(MODE_PRIVATE).getString(MainActivity.KEY_LEVELS, ""));
                 dialog.show();
                 break;
         }

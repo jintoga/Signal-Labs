@@ -17,6 +17,10 @@ import com.dat.signallabs.lab2.Lab2Activity;
 public class MainActivity extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener {
 
+    public static final String KEY_SAW = "SAW";
+    public static final String KEY_ANGLE = "ANGLE";
+    public static final String KEY_LEVELS = "LEVELS";
+
     @Bind(R.id.toolbar)
     protected Toolbar toolbar;
     @Bind(R.id.drawer_layout)

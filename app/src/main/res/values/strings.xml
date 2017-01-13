@@ -31,4 +31,19 @@
         <item>БПФ</item>
         <item>БПФn</item>
     </array>
+    <array name="low_pass_filter_types">
+        <item>Rectangular</item>
+        <item>Hamming</item>
+        <item>Hanning</item>
+        <item>Bartlett</item>
+        <item>Blackman</item>
+    </array>
+    <array name="lab2_signal_types">
+        <item>Идеал</item>
+        <item>Пила</item>
+        <item>Файл</item>
+    </array>
+    <string name="a">\u0418\u0434\u0435\u0430\u043B</string>
+    <string name="b">\u041F\u0438\u043B\u0430</string>
+    <string name="c">\u0424\u0430\u0439\u043B</string>
 </resources>
