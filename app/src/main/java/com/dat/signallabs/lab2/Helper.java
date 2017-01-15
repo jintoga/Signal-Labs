@@ -136,7 +136,7 @@ public class Helper {
         lineDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
         lineDataSet.setColor(ColorTemplate.getHoloBlue());
         lineDataSet.setCircleColor(Color.WHITE);
-        lineDataSet.setLineWidth(0.2f);
+        lineDataSet.setLineWidth(2.5f);
         lineDataSet.setFillColor(ColorTemplate.getHoloBlue());
         lineDataSet.setDrawCircles(false);
         lineDataSet.setDrawCircleHole(false);
