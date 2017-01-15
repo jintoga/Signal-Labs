@@ -21,7 +21,6 @@ import com.dat.signallabs.lab1.Helper;
 import com.dat.signallabs.lab1.Lab1Activity;
 import com.dat.signallabs.lab1.PrimitivesGenerator;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.Description;
 import java.util.List;
 import org.apache.commons.math3.complex.Complex;
 
@@ -77,8 +76,8 @@ public class Lab2Activity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(MainActivity.KEY_SAW, saw);
-        editor.putString(MainActivity.KEY_ANGLE, angle);
-        editor.putString(MainActivity.KEY_LEVELS, levels);
+        editor.putString(MainActivity.KEY_TRIANGULAR, angle);
+        editor.putString(MainActivity.KEY_RECTANGULAR, levels);
         editor.apply();
     }
 
@@ -137,13 +136,13 @@ public class Lab2Activity extends AppCompatActivity {
             case R.id.angle:
                 dialog.setTitle("ANGLE");
                 dialog.setContent(
-                    getPreferences(MODE_PRIVATE).getString(MainActivity.KEY_ANGLE, ""));
+                    getPreferences(MODE_PRIVATE).getString(MainActivity.KEY_TRIANGULAR, ""));
                 dialog.show();
                 break;
             case R.id.levels:
                 dialog.setTitle("LEVELS");
                 dialog.setContent(
-                    getPreferences(MODE_PRIVATE).getString(MainActivity.KEY_LEVELS, ""));
+                    getPreferences(MODE_PRIVATE).getString(MainActivity.KEY_RECTANGULAR, ""));
                 dialog.show();
                 break;
         }

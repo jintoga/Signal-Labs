@@ -18,8 +18,8 @@ public class MainActivity extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final String KEY_SAW = "SAW";
-    public static final String KEY_ANGLE = "ANGLE";
-    public static final String KEY_LEVELS = "LEVELS";
+    public static final String KEY_TRIANGULAR = "TRIANGULAR";
+    public static final String KEY_RECTANGULAR = "RECTANGULAR";
 
     @Bind(R.id.toolbar)
     protected Toolbar toolbar;

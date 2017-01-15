@@ -25,7 +25,6 @@ import org.apache.commons.math3.complex.Complex;
 
 public class Lab1Activity extends AppCompatActivity {
 
-
     @Bind(R.id.toolbar)
     protected Toolbar toolbar;
     @Bind(R.id.spinner1)
@@ -99,7 +98,6 @@ public class Lab1Activity extends AppCompatActivity {
         adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner3.setAdapter(adapter3);
 
-
         graph1.setDescription(null);
         graph2.setDescription(null);
         graph3.setDescription(null);
@@ -116,8 +114,8 @@ public class Lab1Activity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(MainActivity.KEY_SAW, saw);
-        editor.putString(MainActivity.KEY_ANGLE, angle);
-        editor.putString(MainActivity.KEY_LEVELS, levels);
+        editor.putString(MainActivity.KEY_TRIANGULAR, angle);
+        editor.putString(MainActivity.KEY_RECTANGULAR, levels);
         editor.apply();
     }
 
@@ -137,13 +135,15 @@ public class Lab1Activity extends AppCompatActivity {
                 dialog.show();
                 break;
             case R.id.angle:
-                dialog.setTitle("ANGLE");
-                dialog.setContent(getPreferences(MODE_PRIVATE).getString(MainActivity.KEY_ANGLE, ""));
+                dialog.setTitle("TRIANGULAR");
+                dialog.setContent(
+                    getPreferences(MODE_PRIVATE).getString(MainActivity.KEY_TRIANGULAR, ""));
                 dialog.show();
                 break;
             case R.id.levels:
-                dialog.setTitle("LEVELS");
-                dialog.setContent(getPreferences(MODE_PRIVATE).getString(MainActivity.KEY_LEVELS, ""));
+                dialog.setTitle("RECTANGULAR");
+                dialog.setContent(
+                    getPreferences(MODE_PRIVATE).getString(MainActivity.KEY_RECTANGULAR, ""));
                 dialog.show();
                 break;
         }

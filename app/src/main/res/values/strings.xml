@@ -3,8 +3,8 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="levels">Levels</string>
-    <string name="angle">ANGLE</string>
+    <string name="levels">RECTANGULAR</string>
+    <string name="angle">TRIANGULAR</string>
     <string name="saw">SAW</string>
     <string name="original">Оригинал</string>
     <string name="time">Время</string>
@@ -18,8 +18,8 @@
     <string name="lab_4">Lab 4</string>
     <array name="diogramma_types">
         <item>SAW</item>
-        <item>ANGLE</item>
-        <item>LEVELS</item>
+        <item>TRIANGULAR</item>
+        <item>RECTANGULAR</item>
     </array>
     <array name="param_types">
         <item>Абсолютное значение</item>
