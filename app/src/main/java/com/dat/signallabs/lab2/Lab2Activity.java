@@ -272,12 +272,15 @@ public class Lab2Activity extends AppCompatActivity {
                         Helper.drawSignal(graph1,
                             Helper.getSeries(Helper.complexToDouble(signals, 'r'),
                                 FourierTransform.FREQUENCY), "Оригинал");
-                        /*Helper.drawSignal(graph2,
+                        Helper.drawSignal(graph2,
                             Helper.getSeries(Helper.complexToDouble(fSignal, 'r'), 1), diogramma);
                         Helper.drawSignal(graph4,
                             Helper.getSeries(Helper.complexToDouble(ampl, 'r'), 1), lAmplitud);
                         Helper.drawSignal(graph3,
-                            Helper.getSeries(Helper.complexToDouble(lAmpl, 'r'), 1), amplitud);*/
+                            Helper.getSeries(Helper.complexToDouble(lAmpl, 'r'), 1), amplitud);
+                        /*graph2.setVisibility(View.GONE);
+                        graph3.setVisibility(View.GONE);
+                        graph4.setVisibility(View.GONE);*/
                     }
                 }.execute();
                 break;
@@ -285,15 +288,6 @@ public class Lab2Activity extends AppCompatActivity {
             default:
                 break;
         }
-     /*   Helper.drawSignal(graph1,
-            Helper.getSeries(Helper.complexToDouble(signals, 'r'), FourierTransform.FREQUENCY),
-            "Оригинал");
-        Helper.drawSignal(graph2, Helper.getSeries(Helper.complexToDouble(fSignal, 'r'), 1),
-            diogramma);
-        Helper.drawSignal(graph4, Helper.getSeries(Helper.complexToDouble(ampl, 'r'), 1),
-            lAmplitud);
-        Helper.drawSignal(graph3, Helper.getSeries(Helper.complexToDouble(lAmpl, 'r'), 1),
-            amplitud);*/
     }
 
     @Override
@@ -346,7 +340,7 @@ public class Lab2Activity extends AppCompatActivity {
             Log.e(TAG, "File's path: " + path);
             SharedPreferences sharedPreferences = getSharedPreferences(TAG, MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString(KEY_FILE_PATH, path);
+            editor.putString(KEY_FILE_PATH, uri.toString());
             editor.apply();
         }
         super.onActivityResult(requestCode, resultCode, data);

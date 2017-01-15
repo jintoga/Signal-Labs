@@ -1,6 +1,7 @@
 package com.dat.signallabs.lab2;
 
 import android.graphics.Color;
+import android.util.Log;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -127,19 +128,27 @@ public class Helper {
         return series;
     }
 
-    public static void drawSignal(LineChart graphView, List<Entry> series,String label) {
+    public static void drawSignal(LineChart graphView, List<Entry> series, String label) {
 
+        Log.d("SIZE", "SIZE: " + series.size());
         LineDataSet lineDataSet = new LineDataSet(series, label);
 
         lineDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
         lineDataSet.setColor(ColorTemplate.getHoloBlue());
         lineDataSet.setCircleColor(Color.WHITE);
-        lineDataSet.setLineWidth(2.5f);
+        lineDataSet.setLineWidth(0.2f);
         lineDataSet.setFillColor(ColorTemplate.getHoloBlue());
         lineDataSet.setDrawCircles(false);
+        lineDataSet.setDrawCircleHole(false);
+        lineDataSet.setCubicIntensity(0);
+        lineDataSet.setValueTextSize(0);
 
         LineData lineData = new LineData();
         lineData.addDataSet(lineDataSet);
+        graphView.setAutoScaleMinMaxEnabled(true);
+        graphView.setVisibleXRangeMaximum(6);
+        graphView.setMaxVisibleValueCount(6);
+        graphView.setHardwareAccelerationEnabled(true);
         graphView.setData(lineData);
     }
 

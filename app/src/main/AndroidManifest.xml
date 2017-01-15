@@ -18,7 +18,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".lab1.Lab1Activity" />
-        <activity android:name=".lab2.Lab2Activity"></activity>
+        <activity android:name=".lab2.Lab2Activity" />
     </application>
 
 </manifest>
