@@ -9,6 +9,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 public class SoundStream {
     byte[] fileHead = new byte[44];
@@ -141,8 +142,12 @@ public class SoundStream {
         return readSignal;
     }
 
-    public void saveSignal(ArrayList<Double> signal, String fileName) throws IOException {
-        File file = new File(fileName);
+    public void saveSignal(List<Float> signal, String fileName) throws IOException {
+        File root = android.os.Environment.getExternalStorageDirectory();
+
+        File dir = new File(root.getAbsolutePath() + "/download");
+        dir.mkdirs();
+        File file = new File(dir, fileName);
         int dataSize = signal.size() * 2;
         double value;
         byte buffer[] = intToBytes(dataSize + 36);

@@ -278,9 +278,14 @@ public class Lab2Activity extends AppCompatActivity {
                             Helper.getSeries(Helper.complexToDouble(ampl, 'r'), 1), lAmplitud);
                         Helper.drawSignal(graph3,
                             Helper.getSeries(Helper.complexToDouble(lAmpl, 'r'), 1), amplitud);
-                        /*graph2.setVisibility(View.GONE);
-                        graph3.setVisibility(View.GONE);
-                        graph4.setVisibility(View.GONE);*/
+
+                        try {
+                            ss.saveSignal(Helper.complexToDouble(fSignal, 'r'), "result.wav");
+                            Toast.makeText(Lab2Activity.this, "File result.wav saved",
+                                Toast.LENGTH_SHORT).show();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }.execute();
                 break;

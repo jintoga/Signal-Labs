@@ -136,7 +136,7 @@ public class Helper {
         lineDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
         lineDataSet.setColor(ColorTemplate.getHoloBlue());
         lineDataSet.setCircleColor(Color.WHITE);
-        lineDataSet.setLineWidth(2.5f);
+        lineDataSet.setLineWidth(0.5f);
         lineDataSet.setFillColor(ColorTemplate.getHoloBlue());
         lineDataSet.setDrawCircles(false);
         lineDataSet.setDrawCircleHole(false);
@@ -145,9 +145,6 @@ public class Helper {
 
         LineData lineData = new LineData();
         lineData.addDataSet(lineDataSet);
-        graphView.setAutoScaleMinMaxEnabled(true);
-        graphView.setVisibleXRangeMaximum(6);
-        graphView.setMaxVisibleValueCount(6);
         graphView.setHardwareAccelerationEnabled(true);
         graphView.setData(lineData);
     }
