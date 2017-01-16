@@ -123,7 +123,9 @@ public class Lab2Activity extends AppCompatActivity {
         spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+                if (signals != null) {
+                    updateGraphics(position);
+                }
             }
 
             @Override
@@ -142,6 +144,41 @@ public class Lab2Activity extends AppCompatActivity {
         graph2.setDescription(null);
         graph3.setDescription(null);
         graph4.setDescription(null);
+    }
+
+    private void updateGraphics(int position) {
+        graph2.clear();
+        graph3.clear();
+        graph4.clear();
+        final String diogramma = (String) spinner1.getSelectedItem();
+        switch (position) {
+            case 0:
+                Helper.drawSignal(graph2, Helper.getSeries(Helper.complexToDouble(fSignal, 'a'), 1),
+                    diogramma);
+                Helper.drawSignal(graph4, Helper.getSeries(Helper.complexToDouble(ampl, 'a'), 1),
+                    lAmplitud);
+                Helper.drawSignal(graph3, Helper.getSeries(Helper.complexToDouble(lAmpl, 'a'), 1),
+                    amplitud);
+                break;
+
+            case 1:
+                Helper.drawSignal(graph2, Helper.getSeries(Helper.complexToDouble(fSignal, 'r'), 1),
+                    diogramma);
+                Helper.drawSignal(graph4, Helper.getSeries(Helper.complexToDouble(ampl, 'r'), 1),
+                    lAmplitud);
+                Helper.drawSignal(graph3, Helper.getSeries(Helper.complexToDouble(lAmpl, 'r'), 1),
+                    amplitud);
+                break;
+
+            case 2:
+                Helper.drawSignal(graph2, Helper.getSeries(Helper.complexToDouble(fSignal, 'i'), 1),
+                    diogramma);
+                Helper.drawSignal(graph4, Helper.getSeries(Helper.complexToDouble(ampl, 'i'), 1),
+                    lAmplitud);
+                Helper.drawSignal(graph3, Helper.getSeries(Helper.complexToDouble(lAmpl, 'i'), 1),
+                    amplitud);
+                break;
+        }
     }
 
     @OnClick(R.id.drawGraph)
