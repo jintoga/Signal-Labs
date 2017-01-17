@@ -13,6 +13,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.dat.signallabs.lab1.Lab1Activity;
 import com.dat.signallabs.lab2.Lab2Activity;
+import com.dat.signallabs.lab4.Lab4Activity;
 
 public class MainActivity extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener {
@@ -61,6 +62,9 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.lab2:
                 Lab2Activity.startActivity(this);
+                break;
+            case R.id.lab4:
+                Lab4Activity.startActivity(this);
                 break;
         }
         drawer.closeDrawer(GravityCompat.START);
