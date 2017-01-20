@@ -3,6 +3,7 @@ package com.dat.signallabs.lab4;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -15,6 +16,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.dat.signallabs.DialogBuilder;
 import com.dat.signallabs.MainActivity;
 import com.dat.signallabs.R;
 import com.github.mikephil.charting.charts.LineChart;
@@ -49,6 +51,7 @@ public class Lab4Activity extends AppCompatActivity {
     List<Float> fSignal;
     List<Float> rSignal;
     List<Float> aprox;
+    private MaterialDialog loadingDialog;
 
     public static void startActivity(Context context) {
         if (context instanceof Lab4Activity) {
@@ -169,47 +172,102 @@ public class Lab4Activity extends AppCompatActivity {
         graph3.clear();
         graph4.clear();
 
-        int from = Integer.parseInt(editTextFrom.getText().toString());
-        int to = Integer.parseInt(editTextTo.getText().toString());
+        final int from = Integer.parseInt(editTextFrom.getText().toString());
+        final int to = Integer.parseInt(editTextTo.getText().toString());
 
-        String diogramma = (String) spinner1.getSelectedItem();
+        final String diogramma = (String) spinner1.getSelectedItem();
         try {
             signals = PrimitivesGenerator.getFromAssets(getAssets().open(diogramma + ".txt"));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+        loadingDialog = DialogBuilder.createSimpleProgressDialog(Lab4Activity.this);
+
+        final int spinner1SelectedPos = spinner1.getSelectedItemPosition();
         switch (spinner2.getSelectedItemPosition()) {
             case 0:
-                fSignal = UolshAdamarHelper.getUolshTransform(signals, false);
-                aprox = UolshAdamarHelper.getAprox(fSignal, from, to);
-                if (spinner1.getSelectedItemPosition() > 2) {
-                    rSignal = UolshAdamarHelper.getUolshTransform(aprox, true);
-                } else {
-                    rSignal = UolshAdamarHelper.getUolshTransform(
-                        FourierTransform.filter(fSignal, spinner1.getSelectedItemPosition()), true);
-                }
+                new AsyncTask<Void, Void, Void>() {
+                    @Override
+                    protected void onPreExecute() {
+                        loadingDialog.show();
+                        super.onPreExecute();
+                    }
+
+                    @Override
+                    protected Void doInBackground(Void... params) {
+                        fSignal = UolshAdamarHelper.getUolshTransform(signals, false);
+                        aprox = UolshAdamarHelper.getAprox(fSignal, from, to);
+                        if (spinner1SelectedPos > 2) {
+                            rSignal = UolshAdamarHelper.getUolshTransform(aprox, true);
+                        } else {
+                            rSignal = UolshAdamarHelper.getUolshTransform(
+                                FourierTransform.filter(fSignal, spinner1SelectedPos), true);
+                        }
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Void aVoid) {
+                        loadingDialog.dismiss();
+                        graph1.clear();
+                        graph2.clear();
+                        graph3.clear();
+                        graph4.clear();
+                        Helper.drawSignal(graph1,
+                            Helper.getSeries(signals, FourierTransform.FREQUENCY), "Оригинал");
+                        Helper.drawSignal(graph3,
+                            Helper.getSeries(UolshAdamarHelper.getAmplitude(fSignal), 1),
+                            "Амплитуда");
+                        Helper.drawSignal(graph2,
+                            Helper.getSeries(rSignal, FourierTransform.FREQUENCY), "Обратное");
+                        Helper.drawSignal(graph4,
+                            Helper.getSeries(UolshAdamarHelper.getPhase(fSignal), 1), "Фаза");
+                    }
+                }.execute();
                 break;
             case 1:
-                fSignal = UolshAdamarHelper.getAdamarTransform(signals, false);
-                aprox = UolshAdamarHelper.getAprox(fSignal, from, to);
-                if (spinner1.getSelectedItemPosition() > 2) {
-                    rSignal = UolshAdamarHelper.getAdamarTransform(aprox, true);
-                } else {
-                    rSignal = UolshAdamarHelper.getAdamarTransform(
-                        FourierTransform.filter(fSignal, spinner1.getSelectedItemPosition()), true);
-                }
+                new AsyncTask<Void, Void, Void>() {
+                    @Override
+                    protected void onPreExecute() {
+                        loadingDialog.show();
+                        super.onPreExecute();
+                    }
+
+                    @Override
+                    protected Void doInBackground(Void... params) {
+                        fSignal = UolshAdamarHelper.getAdamarTransform(signals, false);
+                        aprox = UolshAdamarHelper.getAprox(fSignal, from, to);
+                        if (spinner1SelectedPos > 2) {
+                            rSignal = UolshAdamarHelper.getAdamarTransform(aprox, true);
+                        } else {
+                            rSignal = UolshAdamarHelper.getAdamarTransform(
+                                FourierTransform.filter(fSignal, spinner1SelectedPos), true);
+                        }
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Void aVoid) {
+                        loadingDialog.dismiss();
+                        graph1.clear();
+                        graph2.clear();
+                        graph3.clear();
+                        graph4.clear();
+                        Helper.drawSignal(graph1,
+                            Helper.getSeries(signals, FourierTransform.FREQUENCY), "Оригинал");
+                        Helper.drawSignal(graph3,
+                            Helper.getSeries(UolshAdamarHelper.getAmplitude(fSignal), 1),
+                            "Амплитуда");
+                        Helper.drawSignal(graph2,
+                            Helper.getSeries(rSignal, FourierTransform.FREQUENCY), "Обратное");
+                        Helper.drawSignal(graph4,
+                            Helper.getSeries(UolshAdamarHelper.getPhase(fSignal), 1), "Фаза");
+                    }
+                }.execute();
                 break;
             default:
                 break;
         }
-
-        Helper.drawSignal(graph1, Helper.getSeries(signals, FourierTransform.FREQUENCY),
-            "Оригинал");
-        Helper.drawSignal(graph3, Helper.getSeries(UolshAdamarHelper.getAmplitude(fSignal), 1),
-            "Амплитуда");
-        Helper.drawSignal(graph2, Helper.getSeries(rSignal, FourierTransform.FREQUENCY),
-            "Обратное");
-        Helper.drawSignal(graph4, Helper.getSeries(UolshAdamarHelper.getPhase(fSignal), 1), "Фаза");
     }
 }
