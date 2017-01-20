@@ -74,7 +74,7 @@
         <include
             layout="@layout/partial_lab4_graphs"
             android:layout_width="match_parent"
-            android:layout_height="380dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="16dp" />
 
         <android.support.v7.widget.AppCompatButton

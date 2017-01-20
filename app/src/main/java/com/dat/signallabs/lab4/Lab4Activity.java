@@ -17,10 +17,9 @@ import butterknife.OnClick;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.dat.signallabs.MainActivity;
 import com.dat.signallabs.R;
-import com.dat.signallabs.lab1.Helper;
-import com.dat.signallabs.lab1.PrimitivesGenerator;
 import com.github.mikephil.charting.charts.LineChart;
 import java.io.IOException;
+import java.util.List;
 
 public class Lab4Activity extends AppCompatActivity {
 
@@ -45,6 +44,11 @@ public class Lab4Activity extends AppCompatActivity {
     protected EditText editTextFrom;
     @Bind(R.id.editTextTo)
     protected EditText editTextTo;
+
+    List<Float> signals;
+    List<Float> fSignal;
+    List<Float> rSignal;
+    List<Float> aprox;
 
     public static void startActivity(Context context) {
         if (context instanceof Lab4Activity) {
@@ -87,9 +91,9 @@ public class Lab4Activity extends AppCompatActivity {
         dialog = new MaterialDialog.Builder(this).title("Generated").build();
         SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        String saw = Helper.signalSaver(PrimitivesGenerator.getSaw(10., 5., 2., 128));
-        String angle = Helper.signalSaver(PrimitivesGenerator.getAngle(10., 5., 2., 128));
-        String levels = Helper.signalSaver(PrimitivesGenerator.getLevels(10., 5., 2., 128));
+        String saw = Helper.signalSaver(PrimitivesGenerator.getSaw(10.f, 5.f, 2.f, 128f));
+        String angle = Helper.signalSaver(PrimitivesGenerator.getAngle(10.f, 5.f, 2.f, 128));
+        String levels = Helper.signalSaver(PrimitivesGenerator.getLevels(10.f, 5.f, 2.f, 128f));
         editor.putString(MainActivity.KEY_SAW, saw);
         editor.putString(MainActivity.KEY_TRIANGULAR, angle);
         editor.putString(MainActivity.KEY_RECTANGULAR, levels);
@@ -160,5 +164,52 @@ public class Lab4Activity extends AppCompatActivity {
     @OnClick(R.id.drawGraph)
     protected void onDrawGraphClicked() {
 
+        graph1.clear();
+        graph2.clear();
+        graph3.clear();
+        graph4.clear();
+
+        int from = Integer.parseInt(editTextFrom.getText().toString());
+        int to = Integer.parseInt(editTextTo.getText().toString());
+
+        String diogramma = (String) spinner1.getSelectedItem();
+        try {
+            signals = PrimitivesGenerator.getFromAssets(getAssets().open(diogramma + ".txt"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        switch (spinner2.getSelectedItemPosition()) {
+            case 0:
+                fSignal = UolshAdamarHelper.getUolshTransform(signals, false);
+                aprox = UolshAdamarHelper.getAprox(fSignal, from, to);
+                if (spinner1.getSelectedItemPosition() > 2) {
+                    rSignal = UolshAdamarHelper.getUolshTransform(aprox, true);
+                } else {
+                    rSignal = UolshAdamarHelper.getUolshTransform(
+                        FourierTransform.filter(fSignal, spinner1.getSelectedItemPosition()), true);
+                }
+                break;
+            case 1:
+                fSignal = UolshAdamarHelper.getAdamarTransform(signals, false);
+                aprox = UolshAdamarHelper.getAprox(fSignal, from, to);
+                if (spinner1.getSelectedItemPosition() > 2) {
+                    rSignal = UolshAdamarHelper.getAdamarTransform(aprox, true);
+                } else {
+                    rSignal = UolshAdamarHelper.getAdamarTransform(
+                        FourierTransform.filter(fSignal, spinner1.getSelectedItemPosition()), true);
+                }
+                break;
+            default:
+                break;
+        }
+
+        Helper.drawSignal(graph1, Helper.getSeries(signals, FourierTransform.FREQUENCY),
+            "Оригинал");
+        Helper.drawSignal(graph3, Helper.getSeries(UolshAdamarHelper.getAmplitude(fSignal), 1),
+            "Амплитуда");
+        Helper.drawSignal(graph2, Helper.getSeries(rSignal, FourierTransform.FREQUENCY),
+            "Обратное");
+        Helper.drawSignal(graph4, Helper.getSeries(UolshAdamarHelper.getPhase(fSignal), 1), "Фаза");
     }
 }
