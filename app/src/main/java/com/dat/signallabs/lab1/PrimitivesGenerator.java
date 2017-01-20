@@ -1,5 +1,9 @@
 package com.dat.signallabs.lab1;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,5 +62,22 @@ public class PrimitivesGenerator {
         }
 
         return levels;
+    }
+
+    public static List<Double> getFromAssets(InputStream inputStream) {
+        BufferedReader reader = null;
+        reader = new BufferedReader(new InputStreamReader(inputStream));
+        List<Double> doubles = new ArrayList<>();
+        String mLine;
+        try {
+            while ((mLine = reader.readLine()) != null) {
+                //process line
+                double val = Double.parseDouble(mLine);
+                doubles.add(val);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return doubles;
     }
 }

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/cardio"
+        android:title="@string/cardio"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/reo"
+        android:title="@string/reo"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/velo"
+        android:title="@string/velo"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/saw"
+        android:title="@string/saw"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/angle"
+        android:title="@string/angle"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/levels"
+        android:title="@string/levels"
+        app:showAsAction="always" />
+</menu>

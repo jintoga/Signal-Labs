@@ -43,7 +43,22 @@
         <item>Пила</item>
         <item>Файл</item>
     </array>
+    <array name="lab4_diagramma_types">
+        <item>Cardio</item>
+        <item>Reo</item>
+        <item>Velo</item>
+        <item>Saw</item>
+        <item>Triangular</item>
+        <item>Rectangular</item>
+    </array>
+    <array name="lab4_function_types">
+        <item>Уолш</item>
+        <item>Адамар</item>
+    </array>
     <string name="a">\u0418\u0434\u0435\u0430\u043B</string>
     <string name="b">\u041F\u0438\u043B\u0430</string>
     <string name="c">\u0424\u0430\u0439\u043B</string>
+    <string name="cardio">Cardio</string>
+    <string name="reo">Reo</string>
+    <string name="velo">Velo</string>
 </resources>

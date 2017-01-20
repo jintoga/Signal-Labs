@@ -21,6 +21,9 @@ public class MainActivity extends AppCompatActivity
     public static final String KEY_SAW = "SAW";
     public static final String KEY_TRIANGULAR = "TRIANGULAR";
     public static final String KEY_RECTANGULAR = "RECTANGULAR";
+    public static final String KEY_CARDIO = "CARDIO";
+    public static final String KEY_VELO = "VELO";
+    public static final String KEY_REO = "REO";
 
     @Bind(R.id.toolbar)
     protected Toolbar toolbar;
