@@ -3,6 +3,7 @@ package com.dat.signallabs.lab1;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -17,9 +18,11 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.dat.signallabs.DialogBuilder;
 import com.dat.signallabs.MainActivity;
 import com.dat.signallabs.R;
 import com.github.mikephil.charting.charts.LineChart;
+import java.io.IOException;
 import java.util.List;
 import org.apache.commons.math3.complex.Complex;
 
@@ -68,7 +71,7 @@ public class Lab1Activity extends AppCompatActivity {
 
     private void init() {
         ArrayAdapter<CharSequence> adapter1 =
-            ArrayAdapter.createFromResource(this, R.array.diogramma_types,
+            ArrayAdapter.createFromResource(this, R.array.lab4_diagramma_types,
                 android.R.layout.simple_spinner_item);
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner1.setAdapter(adapter1);
@@ -104,24 +107,35 @@ public class Lab1Activity extends AppCompatActivity {
     }
 
     private void generate() {
-
-        String saw = Helper.signalSaver(PrimitivesGenerator.getSaw(10., 5., 2., 128));
-        String angle = Helper.signalSaver(PrimitivesGenerator.getAngle(10., 5., 2., 128));
-        String levels = Helper.signalSaver(PrimitivesGenerator.getLevels(10., 5., 2., 128));
-
         dialog = new MaterialDialog.Builder(this).title("Generated").build();
-
         SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
+        String saw = Helper.signalSaver(PrimitivesGenerator.getSaw(10.f, 5.f, 2.f, 128f));
+        String angle = Helper.signalSaver(PrimitivesGenerator.getAngle(10.f, 5.f, 2.f, 128));
+        String levels = Helper.signalSaver(PrimitivesGenerator.getLevels(10.f, 5.f, 2.f, 128f));
         editor.putString(MainActivity.KEY_SAW, saw);
         editor.putString(MainActivity.KEY_TRIANGULAR, angle);
         editor.putString(MainActivity.KEY_RECTANGULAR, levels);
+        try {
+            String cardio = Helper.signalSaver(
+                PrimitivesGenerator.getFromAssets(getAssets().open("Cardio.txt")));
+            String reo =
+                Helper.signalSaver(PrimitivesGenerator.getFromAssets(getAssets().open("Reo.txt")));
+            String velo =
+                Helper.signalSaver(PrimitivesGenerator.getFromAssets(getAssets().open("Velo.txt")));
+            editor.putString(MainActivity.KEY_CARDIO, cardio);
+            editor.putString(MainActivity.KEY_REO, reo);
+            editor.putString(MainActivity.KEY_VELO, velo);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         editor.apply();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.lab_1, menu);
+        getMenuInflater().inflate(R.menu.lab_4, menu);
         return true;
     }
 
@@ -145,10 +159,28 @@ public class Lab1Activity extends AppCompatActivity {
                 dialog.setContent(
                     getPreferences(MODE_PRIVATE).getString(MainActivity.KEY_RECTANGULAR, ""));
                 dialog.show();
+            case R.id.cardio:
+                dialog.setTitle("CARDIO");
+                dialog.setContent(
+                    getPreferences(MODE_PRIVATE).getString(MainActivity.KEY_CARDIO, ""));
+                dialog.show();
+                break;
+            case R.id.reo:
+                dialog.setTitle("REO");
+                dialog.setContent(getPreferences(MODE_PRIVATE).getString(MainActivity.KEY_REO, ""));
+                dialog.show();
+                break;
+            case R.id.velo:
+                dialog.setTitle("VELO");
+                dialog.setContent(
+                    getPreferences(MODE_PRIVATE).getString(MainActivity.KEY_VELO, ""));
+                dialog.show();
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
+
+    private MaterialDialog loadingDialog;
 
     @OnClick(R.id.drawGraph)
     protected void onDrawGraphClicked() {
@@ -156,38 +188,137 @@ public class Lab1Activity extends AppCompatActivity {
         graph2.clear();
         graph3.clear();
 
-        String diogramma = (String) spinner1.getSelectedItem();
+        final String diogramma = (String) spinner1.getSelectedItem();
         spinner2.setSelection(0);
 
         function.setText((String) spinner3.getSelectedItem());
-        signals = Helper.doubleToComplex(
-            Helper.stringToDoubles(getPreferences(MODE_PRIVATE).getString(diogramma, "")));
-        DPF = FourierTransform.DPF(signals);
+        /*signals = Helper.doubleToComplex(
+            Helper.stringToDoubles(getPreferences(MODE_PRIVATE).getString(diogramma, "")));*/
 
+        final int selectedPos = spinner1.getSelectedItemPosition();
+
+        loadingDialog = DialogBuilder.createSimpleProgressDialog(Lab1Activity.this);
         switch (spinner3.getSelectedItemPosition()) {
             case 0:
-                fSignal = FourierTransform.ODPF(
-                    FourierTransform.filter(DPF, spinner1.getSelectedItemPosition()));
+                new AsyncTask<Void, Void, Void>() {
+                    @Override
+                    protected void onPreExecute() {
+                        loadingDialog.show();
+                        super.onPreExecute();
+                    }
+
+                    @Override
+                    protected Void doInBackground(Void... params) {
+                        try {
+                            signals = Helper.doubleToComplex(PrimitivesGenerator.getFromAssets(
+                                getAssets().open(diogramma + ".txt")));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        DPF = FourierTransform.DPF(signals);
+                        fSignal = FourierTransform.ODPF(FourierTransform.filter(DPF, selectedPos));
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Void aVoid) {
+                        loadingDialog.dismiss();
+                        graph1.clear();
+                        graph2.clear();
+                        graph3.clear();
+                        Helper.drawSignal(graph1,
+                            Helper.getSeries(Helper.complexToDouble(signals, 'r'),
+                                FourierTransform.FREQUENCY));
+                        Helper.drawSignal(graph2, Helper.getSeries(Helper.complexToDouble(DPF, 'a'),
+                            DPF.size() / FourierTransform.FREQUENCY));
+                        Helper.drawSignal(graph3,
+                            Helper.getSeries(Helper.complexToDouble(fSignal, 'a'),
+                                fSignal.size() / FourierTransform.FREQUENCY));
+                    }
+                }.execute();
                 break;
 
             case 1:
-                fSignal = FourierTransform.BPF(signals, true);
+                new AsyncTask<Void, Void, Void>() {
+                    @Override
+                    protected void onPreExecute() {
+                        loadingDialog.show();
+                        super.onPreExecute();
+                    }
+
+                    @Override
+                    protected Void doInBackground(Void... params) {
+                        try {
+                            signals = Helper.doubleToComplex(PrimitivesGenerator.getFromAssets(
+                                getAssets().open(diogramma + ".txt")));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        DPF = FourierTransform.DPF(signals);
+                        fSignal = FourierTransform.BPF(signals, true);
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Void aVoid) {
+                        loadingDialog.dismiss();
+                        graph1.clear();
+                        graph2.clear();
+                        graph3.clear();
+                        Helper.drawSignal(graph1,
+                            Helper.getSeries(Helper.complexToDouble(signals, 'r'),
+                                FourierTransform.FREQUENCY));
+                        Helper.drawSignal(graph2, Helper.getSeries(Helper.complexToDouble(DPF, 'a'),
+                            DPF.size() / FourierTransform.FREQUENCY));
+                        Helper.drawSignal(graph3,
+                            Helper.getSeries(Helper.complexToDouble(fSignal, 'a'),
+                                fSignal.size() / FourierTransform.FREQUENCY));
+                    }
+                }.execute();
                 break;
 
             case 2:
-                fSignal = FourierTransform.BPFn(signals);
+                new AsyncTask<Void, Void, Void>() {
+                    @Override
+                    protected void onPreExecute() {
+                        loadingDialog.show();
+                        super.onPreExecute();
+                    }
+
+                    @Override
+                    protected Void doInBackground(Void... params) {
+                        try {
+                            signals = Helper.doubleToComplex(PrimitivesGenerator.getFromAssets(
+                                getAssets().open(diogramma + ".txt")));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        DPF = FourierTransform.DPF(signals);
+                        fSignal = FourierTransform.BPFn(signals);
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Void aVoid) {
+                        loadingDialog.dismiss();
+                        graph1.clear();
+                        graph2.clear();
+                        graph3.clear();
+                        Helper.drawSignal(graph1,
+                            Helper.getSeries(Helper.complexToDouble(signals, 'r'),
+                                FourierTransform.FREQUENCY));
+                        Helper.drawSignal(graph2, Helper.getSeries(Helper.complexToDouble(DPF, 'a'),
+                            DPF.size() / FourierTransform.FREQUENCY));
+                        Helper.drawSignal(graph3,
+                            Helper.getSeries(Helper.complexToDouble(fSignal, 'a'),
+                                fSignal.size() / FourierTransform.FREQUENCY));
+                    }
+                }.execute();
                 break;
 
             default:
                 break;
         }
-
-        Helper.drawSignal(graph1,
-            Helper.getSeries(Helper.complexToDouble(signals, 'r'), FourierTransform.FREQUENCY));
-        Helper.drawSignal(graph2, Helper.getSeries(Helper.complexToDouble(DPF, 'a'),
-            DPF.size() / FourierTransform.FREQUENCY));
-        Helper.drawSignal(graph3, Helper.getSeries(Helper.complexToDouble(fSignal, 'a'),
-            fSignal.size() / FourierTransform.FREQUENCY));
     }
 
     private void updateGraphics(int position) {
